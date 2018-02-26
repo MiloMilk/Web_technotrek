@@ -5,6 +5,15 @@ import os
 
 def get_response(request):
 
+
+    http_200 = "HTTP/1.1 200 OK\n" \
+         +"Content-Type: text/html\n" \
+         +"\n"
+
+    http_400 = "HTTP/1.1 404 Not Found\n" \
+         +"Content-Type: text/html\n" \
+         +"\n"
+
     greeting = "Hello mister! \n You are: "
     http = request.split('\n')
     directory = os.getcwd()[: -len('server')] + 'files/'
@@ -13,7 +22,7 @@ def get_response(request):
     user_data = http[2]
 
     if get_path == '/':
-        return greeting + user_data[11:]
+        return http_200 + '<html><body>' + greeting + user_data[11:] + '</body></html>'
 
     elif get_path == '/test/':
         return request
@@ -22,7 +31,7 @@ def get_response(request):
         files = ''
         for i in os.listdir(directory):
             files += i + ' '
-        return files
+        return http_200 + '<html><body>' + files + '</body></html>'
 
     elif get_path[0:7] == '/media/':
         filename = directory + get_path[7:]
@@ -31,12 +40,12 @@ def get_response(request):
             with open(filename, 'r') as file:
                 for line in file:
                     content += line + '\n'
-            return content
+            return http_200 + '<html><body>' + content + '</body></html>'
         except IOError:
-            return 'File not found'
+            return http_400 + '<html><body>' + 'File not found' + '</body></html>'
 
     else:
-        return "Page not found"
+        return http_400 + '<html><body>' + "Page not found" + '</body></html>'
 
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
