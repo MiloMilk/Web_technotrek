@@ -1,2 +1,3 @@
-project/.idea
-project/*.pyc
+project/project/.idea
+project/project/*.pyc
+project/env
