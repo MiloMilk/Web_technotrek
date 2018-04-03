@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Category {{ category.id }}</title>
+</head>
+<body>
+
+    <h1> {{ category.name }} <br> </h1>
+
+
+    <div>
+
+        {% for post in category.posts.all %}
+
+            <a href = "{% url "post" pk=post.id  %}"> {{ post }}</a>   <br>
+
+        {% endfor %}
+    </div>
+
+    <div>
+        {% if category.author == user %}
+            <a href="{% url "categoryedit" ck=category.id %}"><button>Edit</button></a>
+        {% endif %}
+    </div>
+
+    <br><br>
+
+    <div>Created by {{ category.author }}</div><br>
+    <div><a href="{% url "home" %}">Main Page</a></div>
+</body>
+</html>

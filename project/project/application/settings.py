@@ -39,8 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core.apps.CoreConfig',
     'home.apps.HomeConfig',
-    'page.apps.PageConfig',
     'account.apps.AccountConfig',
+    'categories.apps.CategoriesConfig',
+    'post.apps.PostConfig',
+    'addpost.apps.AddpostConfig',
+    'addcategory.apps.AddcategoryConfig',
 ]
 
 AUTH_USER_MODEL = 'core.User';
@@ -128,3 +131,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LOGIN_URL = 'login'

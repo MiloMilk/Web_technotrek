@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>home page</title>
+</head>
+<body>
+
+<h1>Hello {{ user.name }}, it is home page</h1>
+
+<div>
+
+    {% for post in news %}
+        <a href="{% url "post" pk=post.id%}"> {{ post.name }} </a>
+        {% if not forloop.last %},{% endif %}
+    {%endfor %}
+
+    <form method="get">
+        Sort
+        <select name="sort">
+            <option value="id">by id</option>
+            <option value="name">by name asc</option>
+            <option value="-name">by name desc</option>
+            <option value="created">by date</option>
+        </select>
+        Search
+        <input name="search">
+        <button>OK</button>
+    </form>
+
+<br><br><br>
+
+</div>
+
+<div>
+
+    {% for category in categories %}
+        <a href="{% url "category" ck=category.id%}"> {{ category.name }} </a>
+        {% if not forloop.last %},{% endif %}
+    {%endfor %}
+
+</div>
+
+{% comment %}<a href="{% url "addpost" pk=length %}"><h2>Create new post<br></h2></a>{% endcomment %}
+<a href="{% url "addcategory" %}"><h2>Create new category</h2></a>
+</body>
+</html>

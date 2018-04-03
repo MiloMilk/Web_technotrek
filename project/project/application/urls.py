@@ -14,16 +14,29 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from core.views import AddPost
-from home.views import Home
-from account.views import Account
-from page.views import Page
+from django.conf.urls import url
+from django.contrib.auth.decorators import login_required
+
+from django.urls import path, re_path
+from home.views import home
+from account.views import account
+from post.views import post, EditPost
+from categories.views import category, categoryedit
+from addpost.views import addpost
+from addcategory.views import addcategory
+from core.views import Login
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('add/', AddPost),
-    path('', Home),
-    path('account/', Account),
-    path('page/', Page),
+    re_path(r'^admin/', admin.site.urls),
+    re_path(r'^core/login/$', Login.as_view(), name= "login"),
+    re_path(r'^$', home, name='home'),
+    re_path(r'^account/(?P<name>\w+)/$', login_required(account), name = "account"),
+    re_path(r'^category/(?P<ck>\d+)/$', category, name='category'),
+    re_path(r'^category/(?P<ck>\d+)/edit$', login_required(categoryedit), name='categoryedit'),
+    re_path(r'^post/(?P<pk>\d+)/$', post, name='post'),
+    re_path(r'^post/(?P<pk>\d+)/edit$', EditPost.as_view(), name='editpost'),
+    re_path(r'^addpost/$', login_required(addpost), name='addpost'),
+    re_path(r'^addcategory/$', login_required(addcategory), name='addcategory'),
+
+    re_path(r'^accounts/profile/$', account)
 ]

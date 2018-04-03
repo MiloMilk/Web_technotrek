@@ -1,5 +1,7 @@
 from django.shortcuts import render, HttpResponse
-
+from django.contrib.auth.views import LoginView
 # Create your views here.
-def AddPost(response):
-    return HttpResponse("AddPost Page")
+
+class Login(LoginView):
+
+    template_name = "core/login.html"

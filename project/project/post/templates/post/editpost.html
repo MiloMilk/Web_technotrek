@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Post</title>
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.name }}
+        <button>Edit</button>
+        <br>
+        {{ form.bodytext }}
+    </form>
+</body>
+</html>
