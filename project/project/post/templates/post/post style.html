@@ -14,7 +14,7 @@
         <a href="{% url "home" %}">Main Page</a>
 
 
-            {% if post.author_id == user %}
+            {% if post.author_id == user.id %}
                     <a href="{% url "post:editpost" pk=post.id %}"><button>Edit</button></a>
             {% endif %}
 
@@ -22,7 +22,6 @@
     </header>
 
     <section>
-
 
 
         <h1 id="postname">This is post {{ post.id }}</h1>
@@ -35,6 +34,9 @@
             <h1>{{ post.bodytext }}</h1>
         </div>
 
+        {% if post.image %}
+        <center><img src="{{ post.image.url }}" height="200px" style="margin: 3%"></center>
+        {% endif %}
 
     </section>
 

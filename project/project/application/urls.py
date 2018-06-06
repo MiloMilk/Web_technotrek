@@ -19,6 +19,9 @@ from django.urls import re_path
 from home.views import home
 import debug_toolbar
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     re_path(r'^admin/', admin.site.urls),
 
@@ -33,5 +36,5 @@ urlpatterns = [
     re_path(r'^accounts/', include('account.urls', namespace='account')),
 
     re_path(r'^__debug__/', include(debug_toolbar.urls)),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

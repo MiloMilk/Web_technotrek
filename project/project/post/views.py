@@ -9,7 +9,7 @@ from categories.models import Category
 def post(response, pk = None):
 
     post = Post.objects.get(id=pk)
-    
+
 
     comments = Comment.objects.filter(article_id=post.id)
     context = {
@@ -22,7 +22,7 @@ def post(response, pk = None):
 
 class EditPost(UpdateView):
     model = Post
-    fields = 'name', 'bodytext', 'categories'
+    fields = 'name', 'bodytext', 'categories', 'image'
     context_object_name = 'post'
     template_name = 'post/editpost.html'
 
@@ -51,7 +51,7 @@ def addpost(request):
         form = AddPostForm(instance=post)
         return render(request, 'post/addpost style.html', {'form':form})
     elif request.method == 'POST':
-        form = AddPostForm(request.POST, instance=post)
+        form = AddPostForm(request.POST, request.FILES or None, instance=post)
         if form.is_valid():
             post = form.save()
 

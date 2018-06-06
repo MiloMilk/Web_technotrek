@@ -15,4 +15,4 @@ urlpatterns = [
     re_path(r'^(?P<pk>\d+)/comments$', postcommentview, name='comments'),
     re_path(r'^(?P<pk>\d+)/like', csrf_exempt(login_required(CommentLikeAjaxView.as_view())), name='likeadd'),
     re_path(r'^(?P<pk>\d+)/putcomment', login_required(putcomment), name='putcomment'),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
