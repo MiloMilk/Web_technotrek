@@ -1,32 +1,49 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" name="csrf" content="{{ csrf_token }}">
+     <link href="{% static "post/base.css" %}" rel="stylesheet">
     <title>Category {{ category.id }}</title>
 </head>
 <body>
 
-    <h1> {{ category.name }} <br> </h1>
+    <header>
+        Menu
+        <a href="{% url "home" %}">Main Page</a>
+    </header>
 
 
-    <div>
 
-        {% for post in category.posts.all %}
+    <div class="commentsection">
+        <center>
 
-            <a href = "{% url "post" pk=post.id  %}"> {{ post }}</a>   <br>
+            <h1> {{ category.name }} </h1>  <br>
 
-        {% endfor %}
+
+            <div>
+
+                {% for post in category.posts.all %}
+
+                    <a href = "{% url "post:post" pk=post.id  %}"> {{ post }}</a>   <br>
+
+                {% endfor %}
+            </div>
+            <br>
+            <div>
+                {% if category.author == user %}
+                    <a href="{% url "categories:categoryedit" ck=category.id %}"><button>Edit</button></a>
+                {% endif %}
+            </div>
+        </center>
     </div>
 
-    <div>
-        {% if category.author == user %}
-            <a href="{% url "categoryedit" ck=category.id %}"><button>Edit</button></a>
-        {% endif %}
-    </div>
+    <footer>
+        <div>Created by: {{ category.author }}</div>
+    </footer>
 
-    <br><br>
 
-    <div>Created by {{ category.author }}</div><br>
-    <div><a href="{% url "home" %}">Main Page</a></div>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="{% static "post/base.js" %}"></script>
 </body>
 </html>

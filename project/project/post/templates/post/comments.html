@@ -1,0 +1,30 @@
+
+
+
+{% if not comment.all %}
+    No Comments<br><br>
+{% endif %}
+
+{% for text in comment.all %}
+
+    <div class="content">
+
+        <div class="author">
+            {{ text.author }}
+        </div>
+
+        {{ text.content }}
+
+        <div class="like" >
+
+
+                <button class="btn like" data-url="{% url 'post:likeadd' pk=text.id %}" data-postid="{{ text.id }}">Like</button>
+
+
+
+            <span class="likecounter"> {{ text.commentLike.count }} </span>
+        </div>
+    </div>
+    <br>
+
+{% endfor %}

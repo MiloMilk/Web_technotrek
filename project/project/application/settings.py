@@ -42,11 +42,10 @@ INSTALLED_APPS = [
     'account.apps.AccountConfig',
     'categories.apps.CategoriesConfig',
     'post.apps.PostConfig',
-    'addpost.apps.AddpostConfig',
-    'addcategory.apps.AddcategoryConfig',
+    'debug_toolbar',
 ]
 
-AUTH_USER_MODEL = 'core.User';
+AUTH_USER_MODEL = 'core.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -56,6 +55,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+]
+
+INTERNAL_IPS = [
+    '127.0.0.1',
 ]
 
 ROOT_URLCONF = 'application.urls'
@@ -132,4 +136,16 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-LOGIN_URL = 'login'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static")
+]
+
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn")
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+LOGIN_URL = 'core:login'
+LOGOUT_URL = 'core:logout'

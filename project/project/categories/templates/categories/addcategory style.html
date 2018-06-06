@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" name="csrf" content="{{ csrf_token }}">
+     <link href="{% static "post/base.css" %}" rel="stylesheet">
+    <title>Add Category</title>
+</head>
+<body>
+
+    <header>
+        Menu
+        <a href="{% url "home" %}">Main Page</a>
+    </header>
+
+
+
+    <div class="commentsection">
+        <center>
+            <h2>Hello {{ user.name }}</h2>
+            <br>
+            You can add new category here
+            <br><br>
+            <form method="post">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit">
+            </form>
+        </center>
+    </div>
+
+    <footer>
+
+    </footer>
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="{% static "post/base.js" %}"></script>
+</body>
+</html>

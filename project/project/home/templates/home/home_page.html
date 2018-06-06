@@ -1,47 +1,153 @@
+{% comment %}{% extends 'home/base.html' %}{% endcomment %}
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:text-align="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <title>home page</title>
+
 </head>
 <body>
 
-<h1>Hello {{ user.name }}, it is home page</h1>
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <a class="navbar-brand" href="{% url "home" %}">HOME</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-<div>
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
 
-    {% for post in news %}
-        <a href="{% url "post" pk=post.id%}"> {{ post.name }} </a>
-        {% if not forloop.last %},{% endif %}
-    {%endfor %}
+            {% if not user.is_authenticated %}
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url "core:login" %}">Login <span class="sr-only">(current)</span></a>
+          </li>
+            {% else %}
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url "core:logout" %}">Logout <span class="sr-only">(current)</span></a>
+          </li>
+            {% endif %}
 
-    <form method="get">
-        Sort
-        <select name="sort">
-            <option value="id">by id</option>
-            <option value="name">by name asc</option>
-            <option value="-name">by name desc</option>
-            <option value="created">by date</option>
-        </select>
-        Search
-        <input name="search">
-        <button>OK</button>
-    </form>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="http://example.com/" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Create</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown01">
+              <a class="dropdown-item" href="{% url "post:addpost" %}">New Post</a>
+              <a class="dropdown-item" href="{% url "categories:addcategory" %}">New Category</a>
+            </div>
+          </li>
+        </ul>
 
-<br><br><br>
+        <form class="form-inline my-2 my-lg-0" method="get">
 
-</div>
 
-<div>
+                <select class="form-control" name="sort">
+                    <option value="id">by id</option>
+                    <option value="name">by name asc</option>
+                    <option value="-name">by name desc</option>
+                    <option value="created">by date</option>
+                    <option value="-comments_count">by comments</option>
+                </select>
+                &nbsp;
 
-    {% for category in categories %}
-        <a href="{% url "category" ck=category.id%}"> {{ category.name }} </a>
-        {% if not forloop.last %},{% endif %}
-    {%endfor %}
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
 
-</div>
+      </div>
+    </nav>
 
-{% comment %}<a href="{% url "addpost" pk=length %}"><h2>Create new post<br></h2></a>{% endcomment %}
-<a href="{% url "addcategory" %}"><h2>Create new category</h2></a>
+    <div class="navbar navbar-inverse">
+        <div class="navbar-header"><h1>Hello</h1></div>
+    </div>
+
+    <div class="container-fluid">
+
+        <div class="row">
+            {% for post in news %}
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" align="center">
+                    <div class="card mb-4 box-shadow">
+                    <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;
+                    text=Thumbnail" align="center" alt="Thumbnail [100%x225]" style="height: 10%; width: 100%; display: block;"
+                         src="http://miptstream.ru/wp-content/uploads/2015/09/uKsyoZRT6g.jpg" data-holder-rendered="true">
+
+                        <a href="{% url "post:post" pk=post.id%}"> {{ post.name }} </a>
+                        <p class="card-text" style="padding: 20px">
+                            {% if post.bodytext %}
+                                {{ post.bodytext }}
+                            {% else %}
+                                No text in here
+                            {% endif %}
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+
+                        <a href="{% url "post:post" pk=post.id %}">
+                            <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                        </a>
+
+                      {% if post.author_id == user.id %}
+                        <a href="{% url "post:editpost" pk=post.id %}">
+                            <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                        </a>
+                      {% endif %}
+
+
+
+                    </div>
+                        {% comment %}<div style="display: inline-block; float: right; margin: 0 4%">Автор: {{ post.author }}</div>
+                            <br>
+                        <div style="display: inline-block; margin-right: 4%">{% for category in post.categories.all %}{{ category }}{% endfor %}</div>{% endcomment %}
+                        <div style="display: inline-block; margin-right: 4%">Комментов {{ post.comments_count }}</div>
+                  </div>
+                    </div>
+
+                </div>
+                {% comment %}{% if not forloop.last %},{% endif %}{% endcomment %}
+            {%endfor %}
+        </div>
+
+    <br>
+
+
+
+{% comment %}        <div class="container-fluid">
+            <div class="col-md-12">
+                <form method="get">
+                    Sort
+                    <select name="sort">
+                        <option value="id">by id</option>
+                        <option value="name">by name asc</option>
+                        <option value="-name">by name desc</option>
+                        <option value="created">by date</option>
+                    </select>
+                    Search
+                    <input name="search">
+                    <button>OK</button>
+                </form>
+            </div>
+            <div class="col-md-6"><a href="{% url "post:addpost" %}">Create new post</a></div>
+            <div class="col-md-6"><a href="{% url "categories:addcategory" %}">Create new category</a></div>
+        </div>{% endcomment %}
+
+    <br><br><br>
+
+        <div align="center">
+
+            {% for category in categories %}
+                <a href="{% url "categories:category" ck=category.id%}"> <code>{{ category.name }}</code> </a>
+                {% if not forloop.last %},{% endif %}
+            {%endfor %}
+
+        </div>
+
+
+    </div>
+
+    <script src="/static/js/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="/static/js/popper.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -1,28 +1,81 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" name="csrf" content="{{ csrf_token }}">
     <title>Page {{ post.id }}</title>
+     <link href="{% static "post/base.css" %}" rel="stylesheet">
+
 </head>
 <body>
-<h1>This is post {{ post.id }}</h1> <br>
 
-<div>
-    {% for category in post.categories.all %}
-        <a href = "{% url "category" ck=category.id  %}"> {{ category }} </a><br>
-    {% endfor %}
-</div>
-<br>
-<h1>{{ post.bodytext }}</h1>
-<br>
-<div>
-    {% if post.author == user %}
-            <a href="{% url "editpost" pk=post.id %}"><button>Edit</button></a>
-    {% endif %}
-</div>
+    <header>
+        Menu
+        <a href="{% url "home" %}">Main Page</a>
 
-Created by: <a href="{% url "account" name=post.author %}">{{ post.author }} </a> <br><br>
 
-<a href="{% url "home" %}">Main Page</a>
+            {% if post.author_id == user %}
+                    <a href="{% url "post:editpost" pk=post.id %}"><button>Edit</button></a>
+            {% endif %}
+
+
+    </header>
+
+    <section>
+
+
+
+        <h1 id="postname">This is post {{ post.id }}</h1>
+        <br>
+
+
+
+
+        <div class="text-body">
+            <h1>{{ post.bodytext }}</h1>
+        </div>
+
+
+    </section>
+
+    <div class="tags">
+        {% for category in post.categories.all %}
+                <a href = "{% url "categories:category" ck=category.id  %}"> {{ category }} </a> &nbsp;&nbsp;
+        {% endfor %}
+    </div>
+
+    <div class="commentsection" data-url="{% url "post:comments" pk=post.id %}">
+
+        <div class="comments" data-url="{% url "post:comments" pk=post.id %}">
+            Comment section<br><br>
+        </div>
+
+            {% if user.is_authenticated %}
+            <form method="post" id="commentform" style="margin: 0 30px" action="{% url "post:putcomment" pk=post.id %}">
+
+                <textarea name="message" id="message" style="height: 100px; width: 100%">Ваш комментарий</textarea>
+                <br>
+                <input type="submit" form="commentform">
+                {% csrf_token %}
+            </form>
+            {% else %}
+                <center>Only logged users can write comments</center>
+            {% endif %}
+
+
+    </div>
+
+
+    <footer>
+        Created by: <a href="{% url "account:account" name=post.author %}">{{ post.author }} </a>
+    </footer>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="{% static "post/base.js" %}"></script>
+
+
 </body>
 </html>

@@ -22,7 +22,7 @@ def categoryedit(request, ck = None):
 
     category = Category.objects.get(id=ck)
     if category.author != request.user:
-        return HttpResponse(u"ПОШЕЛ НА***")
+        return HttpResponse(u"ПШЕЛ ОТСЮДА")
 
     if request.method == 'GET':
         form = AddCategoryForm(instance=category)
@@ -35,3 +35,20 @@ def categoryedit(request, ck = None):
         else:
             return render(request, 'categories/categoryedit.html', {'form': form, 'category':category})
 
+def addcategory(request):
+    if request.method == 'GET':
+        form = AddCategoryForm()
+        return render(request, 'categories/addcategory style.html', {'form':form})
+    elif request.method == 'POST':
+        form = AddCategoryForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            category = Category(name=data['name'])
+            category.author = request.user
+            category.save()
+            return redirect('/')
+        else:
+            return render(request, 'categories/addcategory style.html', {'form': form})
+
+
+    return HttpResponse("Thank YOU")

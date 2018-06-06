@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ user.name }}s account</title>
+    <title>{{ user }}s account</title>
 </head>
 <body>
-<h1>Hello {{ user.name }}</h1><br>
+<h1>This is {{ user }}s posts</h1><br>
 
-{% for post in posts %}{{ post }}<br>{% endfor %}
+{% for post in posts %}{{ post }}<br>{% endfor %}<br>
 
 <a href="{% url "home" %}">To main page</a>
 </body>

@@ -1,16 +1,44 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" name="csrf" content="{{ csrf_token }}">
+     <link href="{% static "post/base.css" %}" rel="stylesheet">
     <title>Edit Post</title>
 </head>
 <body>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.name }}
-        <button>Edit</button>
-        <br>
-        {{ form.bodytext }}
-    </form>
+
+    <header>
+        Menu
+        <a href="{% url "home" %}">Main Page</a>
+    </header>
+
+    <div class="commentsection">
+        <center>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.name }}
+                <button>Edit</button>
+                <br><br>
+                {{ form.bodytext }}
+                <br><br>
+                {{ form.categories }}
+            </form>
+        </center>
+    </div>
+
+    <footer>
+        Created by: <a href="{% url "account:account" name=post.author %}">{{ post.author }} </a>
+    </footer>
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="{% static "post/base.js" %}"></script>
 </body>
 </html>
+
+
+
+
+
+
